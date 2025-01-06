@@ -365,3 +365,37 @@ The ABI of the compiled contract is:
 	}
 ]
 ```
+
+## Solution
+
+### Prerequisites
+
+- **Node.js (v20 or higher)**: Ensure that you're using at least Node.js v20. It's recommended to use **nvm** (Node Version Manager) to manage different Node.js versions.
+
+If you don't have **nvm** installed, you can install it following the instructions from [nvm's GitHub](https://github.com/nvm-sh/nvm).
+
+Once **nvm** is installed, run the following commands to install and use Node.js v20:
+
+```bash
+nvm install 20
+nvm use 20
+```
+
+Or just run `nvm use` and it will use the version specified in `.nvmrc` file
+
+### Setup 
+
+1. **Install dependencies:** Run the following command to install all necessary dependencies:
+
+```
+yarn install
+```
+
+2. **Run local development server:** After the dependencies are installed, you can start the development server by running:
+
+```
+yarn dev
+```
+
+The local server should now be running, and you can open your browser to the provided URL (by default http://localhost:5173) to see the project in action.
+
