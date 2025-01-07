@@ -7,7 +7,14 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@services/*": ["./src/services/*"],
+      "@custom-types/*": ["./src/custom-types/*"],
+      "@utils/*": ["./src/utils/*"]
     },
 
     /* Bundler mode */

@@ -383,7 +383,7 @@ nvm use 20
 
 Or just run `nvm use` and it will use the version specified in `.nvmrc` file
 
-### Setup 
+### Setup
 
 1. **Install dependencies:** Run the following command to install all necessary dependencies:
 
@@ -398,4 +398,3 @@ yarn dev
 ```
 
 The local server should now be running, and you can open your browser to the provided URL (by default http://localhost:5173) to see the project in action.
-
