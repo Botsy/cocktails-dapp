@@ -2,12 +2,11 @@ import {
   Box,
   createListCollection,
   Flex,
-  SimpleGrid,
   Spinner,
   Text,
 } from '@chakra-ui/react';
 import CategoryFilter from '@components/common/category-filter';
-import CocktailCard from '@components/common/cocktail-card';
+import CocktailsGrid from '@components/common/cocktails-grid';
 import { Category } from '@custom-types/cocktails';
 import { useWeb2Categories, useWeb2CocktailsByCategory } from '@hooks/queries';
 import { FC, useEffect, useState } from 'react';
@@ -54,11 +53,7 @@ export const Web2Page: FC = () => {
       {isLoadingCocktails ? (
         <Spinner />
       ) : (
-        <SimpleGrid columns={[1, 2, 4, 6]} rowGap={3} columnGap={3}>
-          {cocktails?.map((cocktail) => (
-            <CocktailCard key={cocktail.id} cocktail={cocktail} />
-          ))}
-        </SimpleGrid>
+        <CocktailsGrid cocktails={cocktails} />
       )}
     </Box>
   );

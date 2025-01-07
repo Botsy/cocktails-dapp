@@ -13,7 +13,7 @@ export const Navigation: FC<Props> = ({ type }) => {
       <NavigationLink to={`/${type}`} mr={4}>
         Home
       </NavigationLink>
-      <NavigationLink to={`/${type}-favourites`}>Favourites</NavigationLink>
+      <NavigationLink to={`/${type}/favourites`}>Favourites</NavigationLink>
     </Flex>
   );
 };

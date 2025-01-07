@@ -37,8 +37,9 @@ export const useWeb2CocktailsByIds = (ids: string[]) => {
     })),
     combine: (results) => {
       return {
-        data: results.map((result) => result.data),
-        // pending: results.some((result) => result.isPending),
+        data: results
+          .map((result) => result.data)
+          .filter(Boolean) as Cocktail[],
       };
     },
   });

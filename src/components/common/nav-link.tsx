@@ -15,10 +15,10 @@ export const NavigationLink: FC<Partial<RouterLinkProps> & ChakraLinkProps> = ({
       as={(props) => (
         <NavLink
           {...props}
+          end
           style={({ isActive }) => {
             return {
               textDecoration: isActive ? 'underline' : 'none',
-              paddingBottom: 2,
             };
           }}
         />

@@ -1,30 +1,39 @@
 import { Box, Image, Text, IconButton, Flex } from '@chakra-ui/react';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 import { Cocktail } from '@custom-types/cocktails';
-import { useFavourites } from '@hooks/favorites';
-import { WebTypeEnum } from '@custom-types/common';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { useFavorites } from '@contexts/favorites';
+import { Tooltip } from '@components/ui/tooltip';
 
 interface Props {
   cocktail: Cocktail;
 }
 
-const CocktailCard: React.FC<Props> = ({ cocktail }) => {
-  const { favourites, addFavourite, removeFavourite, isFavourite } =
-    useFavourites(WebTypeEnum.WEB_2);
-  const [isFav, setIsFav] = useState<boolean>(false);
+const CocktailCard: FC<Props> = ({ cocktail }) => {
+  const { addFavourite, removeFavourite, isFavourite } = useFavorites();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
-    const checkIfFavourite = async () => {
-      const favStatus = await isFavourite(cocktail);
-      setIsFav(favStatus);
+    const checkFavourite = async () => {
+      const result = await isFavourite(cocktail);
+      setIsFav(result);
     };
 
-    checkIfFavourite();
-  }, [cocktail, isFavourite, favourites]);
+    checkFavourite();
+  }, [cocktail, isFavourite]);
 
-  const onToggleFavourite = () =>
-    isFav ? removeFavourite(cocktail) : addFavourite(cocktail);
+  const handleFavouriteClick = async () => {
+    setIsLoading(true);
+    if (isFav) {
+      await removeFavourite(cocktail);
+    } else {
+      await addFavourite(cocktail);
+    }
+    const updatedIsFav = await isFavourite(cocktail);
+    setIsFav(updatedIsFav);
+    setIsLoading(false);
+  };
 
   return (
     <Box
@@ -52,15 +61,26 @@ const CocktailCard: React.FC<Props> = ({ cocktail }) => {
               {cocktail.category}
             </Text>
           </Box>
-          <IconButton
-            aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
-            size="sm"
-            background={'gray.300/20'}
-            onClick={onToggleFavourite}
-            ml={2}
+
+          <Tooltip
+            content={isFav ? 'Remove from Favourites' : 'Add to Favourites'}
+            aria-label="Add/remove from Favourites button tooltip"
           >
-            {isFav ? <FaHeart color="red" /> : <FaRegHeart color="gray" />}
-          </IconButton>
+            <IconButton
+              aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
+              size="sm"
+              background={`white.100/${isFav ? '40' : '30'}`}
+              onClick={handleFavouriteClick}
+              disabled={isLoading}
+              ml={2}
+            >
+              {isFav ? (
+                <FaStar color="turquoise" />
+              ) : (
+                <FaRegStar color="turquoise" />
+              )}
+            </IconButton>
+          </Tooltip>
         </Flex>
       </Box>
     </Box>
