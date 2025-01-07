@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter } from 'react-router-dom';
 import PageWrapper from '@components/common/page-wrapper';
 import { Provider as ChakraUiProvider } from '@components/ui/provider';
@@ -11,7 +12,7 @@ const queryClient = new QueryClient({
       refetchOnMount: true,
       refetchOnReconnect: true,
       staleTime: 1000 * 60 * 5, // 5 min
-      retry: false,
+      retry: 2,
     },
   },
 });
@@ -19,6 +20,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <BrowserRouter>
         <ChakraUiProvider>
           <PageWrapper>
