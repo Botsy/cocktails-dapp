@@ -16,10 +16,10 @@ export const HomePage: FC = () => {
         Please select which version of the task you would like to see:
       </Text>
       <Button as={Link} to="/web2" mb={3}>
-        Web 2 Page
+        Web2 Task
       </Button>
       <Button as={Link} to="/web3">
-        Web 3 Page
+        Web3 Task
       </Button>
     </Box>
   );

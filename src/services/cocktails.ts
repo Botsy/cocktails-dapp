@@ -35,3 +35,29 @@ export const fetchWeb2CocktailsByCategory = async (
     throw handleAppError(error);
   }
 };
+
+export const fetchWeb2CocktailById = async (id: string): Promise<Cocktail> => {
+  try {
+    const response = await axios.get(
+      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`
+    );
+    const drink = response.data.drinks?.[0];
+
+    if (!drink) {
+      throw new Error(`Cocktail with ID ${id} not found`);
+    }
+
+    return {
+      id: drink.idDrink,
+      name: drink.strDrink,
+      imageUrl: drink.strDrinkThumb,
+      category: drink.strCategory,
+      ingredients: Array.from({ length: 15 })
+        .map((_, i) => drink[`strIngredient${i + 1}`])
+        .filter(Boolean),
+      cocktailType: drink.strAlcoholic,
+    };
+  } catch (error: unknown) {
+    throw handleAppError(error);
+  }
+};
