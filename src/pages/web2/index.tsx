@@ -1,12 +1,7 @@
-import {
-  Box,
-  createListCollection,
-  Flex,
-  Spinner,
-  Text,
-} from '@chakra-ui/react';
+import { Box, createListCollection, Flex, Text } from '@chakra-ui/react';
 import CategoryFilter from '@components/common/category-filter';
 import CocktailsGrid from '@components/common/cocktails-grid';
+import Spinner from '@components/common/spinner';
 import { Category } from '@custom-types/cocktails';
 import { useWeb2Categories, useWeb2CocktailsByCategory } from '@hooks/queries';
 import { FC, useEffect, useState } from 'react';
@@ -36,7 +31,7 @@ export const Web2Page: FC = () => {
   });
 
   return (
-    <Box>
+    <Box width="100%">
       <Flex flex={1} justifyContent="space-between" alignItems="center">
         <Flex flex={1}>
           <Text fontSize="2xl" mb={4}>
