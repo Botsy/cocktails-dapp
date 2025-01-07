@@ -35,7 +35,12 @@ const CocktailCard: React.FC<Props> = ({ cocktail }) => {
       _hover={{ boxShadow: 'lg', transform: 'scale(1.02)' }}
       transition="all 0.2s"
     >
-      <Image src={cocktail.imageUrl} alt={cocktail.name} objectFit="cover" />
+      <Image
+        src={`${cocktail.imageUrl}/preview`}
+        alt={cocktail.name}
+        objectFit="contain"
+        width="100%"
+      />
 
       <Box p="4">
         <Flex flex={1} justifyContent="space-between">
@@ -49,9 +54,8 @@ const CocktailCard: React.FC<Props> = ({ cocktail }) => {
           </Box>
           <IconButton
             aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
-            // colorPalette={"white"}
             size="sm"
-            background={'gray.200/30'}
+            background={'gray.300/20'}
             onClick={onToggleFavourite}
             ml={2}
           >

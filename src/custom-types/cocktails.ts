@@ -28,3 +28,8 @@ export interface Cocktail {
   totalRatings?: number;
   numberOfRatings?: number;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+}

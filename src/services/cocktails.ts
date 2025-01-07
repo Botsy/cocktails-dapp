@@ -1,17 +1,26 @@
 import {
   CategoriesResponse,
+  Category,
   Cocktail,
   CocktailsResponse,
 } from '@custom-types/cocktails';
 import { handleAppError } from '@utils/error-handle';
 import axios from 'axios';
 
-export const fetchWeb2Categories = async (): Promise<string[]> => {
+export const fetchWeb2Categories = async (): Promise<Category[]> => {
   try {
     const { data } = await axios.get<CategoriesResponse>(
       'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'
     );
-    return data.drinks.map((drink) => drink.strCategory);
+
+    // Map API data to Category interface
+    return data.drinks.map(
+      (drink, index) =>
+        ({
+          id: index + 1,
+          name: drink.strCategory,
+        }) as unknown as Category
+    );
   } catch (error: unknown) {
     throw handleAppError(error);
   }

@@ -2,7 +2,7 @@ import { FC, SVGProps } from 'react';
 
 const CocktailIcon: FC<SVGProps<SVGElement>> = (props) => (
   <svg
-    fill={props.fill || '#ffffff'}
+    fill={props.fill || '#000000'}
     height={props.height || '30px'}
     width={props.width || '30px'}
     version="1.1"

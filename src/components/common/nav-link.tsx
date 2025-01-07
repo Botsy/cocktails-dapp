@@ -24,7 +24,7 @@ export const NavigationLink: FC<Partial<RouterLinkProps> & ChakraLinkProps> = ({
         />
       )}
       to={to}
-      color="white"
+      color="black"
       fontSize="lg"
       fontWeight="bold"
       _focus={{ outline: 'none' }}
