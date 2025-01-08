@@ -76,6 +76,7 @@ const PageWrapper: FC<{ children: ReactNode }> = ({ children }) => {
         color="black"
         py={4}
         justifyContent="center"
+        mt={8}
       >
         <Text>
           <strong>&copy; 2025 The Cocktail App</strong> developed by Boryana

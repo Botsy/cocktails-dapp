@@ -69,9 +69,9 @@ const CocktailCard: FC<Props> = ({ cocktail }) => {
             <IconButton
               aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
               size="sm"
-              background={`white.100/${isFav ? '40' : '30'}`}
               onClick={handleFavouriteClick}
               disabled={isLoading}
+              variant="ghost"
               ml={2}
             >
               {isFav ? (

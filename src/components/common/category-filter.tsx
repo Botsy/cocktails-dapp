@@ -1,5 +1,6 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Box, ListCollection } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import {
   SelectContent,
   SelectItem,
@@ -20,6 +21,17 @@ const CategoryFilter: FC<CategoryFilterProps> = ({
   value,
   onCategoryChange,
 }) => {
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+
+  const initialCategory = queryParams.get('category') || value;
+
+  useEffect(() => {
+    if (value !== initialCategory) {
+      onCategoryChange([initialCategory as string]);
+    }
+  }, [initialCategory, onCategoryChange, value]);
+
   return (
     <Box mb={4}>
       <SelectRoot
@@ -27,7 +39,10 @@ const CategoryFilter: FC<CategoryFilterProps> = ({
         size="sm"
         width="320px"
         value={value}
-        onValueChange={(e) => onCategoryChange(e.value)}
+        onValueChange={(e) => {
+          onCategoryChange(e.value);
+          navigate(`?category=${e.value[0]}`);
+        }}
       >
         <SelectLabel>Filter by category:</SelectLabel>
         <SelectTrigger>

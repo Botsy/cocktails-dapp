@@ -7,10 +7,12 @@ import {
 import { handleAppError } from '@utils/error-handle';
 import axios from 'axios';
 
+const API_URL = 'https://www.thecocktaildb.com/api/json/v1/1';
+
 export const fetchWeb2Categories = async (): Promise<Category[]> => {
   try {
     const { data } = await axios.get<CategoriesResponse>(
-      'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list'
+      `${API_URL}/list.php?c=list`
     );
 
     // Map API data to Category interface
@@ -30,7 +32,7 @@ export const fetchWeb2CocktailsByCategory = async (
 ): Promise<Cocktail[]> => {
   try {
     const { data } = await axios.get<CocktailsResponse>(
-      `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category)}`
+      `${API_URL}/filter.php?c=${encodeURIComponent(category)}`
     );
 
     // Map API data to Cocktail interface
@@ -47,9 +49,7 @@ export const fetchWeb2CocktailsByCategory = async (
 
 export const fetchWeb2CocktailById = async (id: string): Promise<Cocktail> => {
   try {
-    const response = await axios.get(
-      `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`
-    );
+    const response = await axios.get(`${API_URL}/lookup.php?i=${id}`);
     const drink = response.data.drinks?.[0];
 
     if (!drink) {
@@ -66,6 +66,52 @@ export const fetchWeb2CocktailById = async (id: string): Promise<Cocktail> => {
         .filter(Boolean),
       cocktailType: drink.strAlcoholic,
     };
+  } catch (error: unknown) {
+    throw handleAppError(error);
+  }
+};
+
+export const searchCocktailsByIngredientName = async (ingredient: string) => {
+  try {
+    const response = await axios
+      .get<CocktailsResponse>(`${API_URL}/filter.php?i=${ingredient}`)
+      .then((response) => response.data.drinks || []);
+
+    if (!response.length) {
+      throw new Error(`Cocktails with Ingredient ${ingredient} not found`);
+    }
+
+    // In case no result is found, return an empty array
+    if (!Array.isArray(response)) return [];
+
+    return response.map((drink) => ({
+      id: drink.idDrink,
+      name: drink.strDrink,
+      imageUrl: drink.strDrinkThumb,
+    })) as Cocktail[];
+  } catch (error: unknown) {
+    throw handleAppError(error);
+  }
+};
+
+export const searchCocktailsByName = async (name: string) => {
+  try {
+    const response = await axios
+      .get<CocktailsResponse>(`${API_URL}/search.php?s=${name}`)
+      .then((response) => response.data.drinks || []);
+
+    if (!response.length) {
+      throw new Error(`Cocktail with name ${name} not found`);
+    }
+
+    // In case no result is found, return an empty array
+    if (!Array.isArray(response)) return [];
+
+    return response.map((drink) => ({
+      id: drink.idDrink,
+      name: drink.strDrink,
+      imageUrl: drink.strDrinkThumb,
+    })) as Cocktail[];
   } catch (error: unknown) {
     throw handleAppError(error);
   }

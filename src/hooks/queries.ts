@@ -2,6 +2,8 @@ import {
   fetchWeb2CocktailById,
   fetchWeb2Categories,
   fetchWeb2CocktailsByCategory,
+  searchCocktailsByIngredientName,
+  searchCocktailsByName,
 } from '@services/cocktails';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { WebTypeEnum } from '@custom-types/common';
@@ -29,6 +31,7 @@ export const useWeb2CocktailById = (id: string) => {
     enabled: !!id, // Ensures the query only runs if an ID is provided
   });
 };
+
 export const useWeb2CocktailsByIds = (ids: string[]) => {
   return useQueries({
     queries: ids.map((id) => ({
@@ -40,6 +43,32 @@ export const useWeb2CocktailsByIds = (ids: string[]) => {
         data: results
           .map((result) => result.data)
           .filter(Boolean) as Cocktail[],
+      };
+    },
+  });
+};
+
+export const useWeb2Search = (search?: string) => {
+  return useQueries({
+    queries: [
+      {
+        queryKey: [`${WebTypeEnum.WEB_2}-search-ingredient`, search],
+        queryFn: () => searchCocktailsByIngredientName(search as string),
+        enabled: !!search, // Only fetch if search is defined
+      },
+      {
+        queryKey: [`${WebTypeEnum.WEB_2}-search-name`, search],
+        queryFn: () => searchCocktailsByName(search as string),
+        enabled: !!search, // Only fetch if search is defined
+      },
+    ],
+    combine: (results) => {
+      return {
+        data: results
+          .map((result) => result.data)
+          .filter(Boolean)
+          .flat() as Cocktail[],
+        isLoading: results.some((result) => result.isLoading),
       };
     },
   });
