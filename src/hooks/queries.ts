@@ -32,17 +32,19 @@ export const useWeb2CocktailById = (id: string) => {
   });
 };
 
-export const useWeb2CocktailsByIds = (ids: string[]) => {
+export const useWeb2CocktailsByIds = (ids: string[], enabled: boolean) => {
   return useQueries({
     queries: ids.map((id) => ({
       queryKey: [`${WebTypeEnum.WEB_2}-cocktail`, id],
       queryFn: () => fetchWeb2CocktailById(id),
+      enabled,
     })),
     combine: (results) => {
       return {
         data: results
           .map((result) => result.data)
           .filter(Boolean) as Cocktail[],
+        isLoading: results.some((result) => result.isLoading),
       };
     },
   });
