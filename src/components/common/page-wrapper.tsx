@@ -23,7 +23,7 @@ const PageWrapper: FC<{ children: ReactNode }> = ({ children }) => {
         position="sticky"
         top="0"
         zIndex="10"
-        bg="teal.300"
+        bg="teal.500"
         pt={4}
         pb={4}
         color="black"
@@ -72,7 +72,7 @@ const PageWrapper: FC<{ children: ReactNode }> = ({ children }) => {
       {/* Footer */}
       <Flex
         as="footer"
-        bg="teal.300"
+        bg="teal.500"
         color="black"
         py={4}
         justifyContent="center"

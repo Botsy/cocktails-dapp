@@ -29,6 +29,7 @@ export const useWeb2CocktailById = (id: string) => {
   return useQuery({
     queryKey: [Web2QueryKeyEnum.GET_COCKTAIL_BY_ID, id],
     queryFn: () => fetchWeb2CocktailById(id),
+    placeholderData: undefined,
     enabled: !!id, // Ensures the query only runs if an ID is provided
   });
 };

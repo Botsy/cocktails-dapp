@@ -133,10 +133,10 @@ export const fetchWeb2RandomCocktail = async () => {
       throw new Error(`Random cocktail not found`);
     }
 
-    // In case no result is found, return an empty array
-    if (!Array.isArray(response)) return [];
+    // In case no result is found, return null
+    if (!Array.isArray(response)) return null;
 
-    return response.map((drink) => ({
+    const data = response.map((drink) => ({
       id: drink.idDrink,
       name: drink.strDrink,
       imageUrl: drink.strDrinkThumb,
@@ -150,7 +150,8 @@ export const fetchWeb2RandomCocktail = async () => {
         .filter(Boolean),
       instructions: drink.strInstructions,
       cocktailType: drink.strAlcoholic,
-    }))[0] as Cocktail;
+    }));
+    return data[0] as Cocktail;
   } catch (error: unknown) {
     throw handleAppError(error);
   }

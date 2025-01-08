@@ -10,7 +10,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { HStack, Stack } from '@chakra-ui/react';
 
 interface Props {
-  cocktail?: Cocktail | never[];
+  cocktail?: Cocktail | null;
   isLoading: boolean;
   show: boolean;
   onClose: () => void;
@@ -38,7 +38,11 @@ const CocktailDialog: FC<Props> = ({ isLoading, cocktail, show, onClose }) => {
         ) : (
           <CocktailCard cocktail={cocktail} showDescription />
         )}
-        <DialogCloseTrigger bg="white/70" />
+        <DialogCloseTrigger
+          bg="white/60"
+          _hover={{ background: 'white/100' }}
+          colorScheme="revert"
+        />
       </DialogContent>
     </DialogRoot>
   );

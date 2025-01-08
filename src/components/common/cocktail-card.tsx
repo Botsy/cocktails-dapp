@@ -5,15 +5,18 @@ import { FC, useEffect, useState } from 'react';
 import { useFavorites } from '@contexts/favorites';
 import { Tooltip } from '@components/ui/tooltip';
 import ClinkSound from '@assets/sounds/clinking-glass.wav';
+import { Skeleton } from '@components/ui/skeleton';
 
 interface Props {
   cocktail: Cocktail;
   showDescription?: boolean;
+  onSelect?: (id: string) => void;
 }
 
-const CocktailCard: FC<Props> = ({ cocktail, showDescription }) => {
+const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
   const { addFavourite, removeFavourite, isFavourite } = useFavorites();
   const [audio] = useState(new Audio(ClinkSound));
+  const [isImgLoading, setIsImgLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isFav, setIsFav] = useState(false);
 
@@ -42,6 +45,12 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription }) => {
     setIsLoading(false);
   };
 
+  const handleClick = () => {
+    if (!showDescription && !!onSelect) onSelect(cocktail.id);
+  };
+
+  const handleImgLoaded = () => setIsImgLoading(false);
+
   return (
     <Flex
       flexDirection={['column', 'column', showDescription ? 'row' : 'column']}
@@ -52,20 +61,33 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription }) => {
       _hover={
         !showDescription ? { boxShadow: 'lg', transform: 'scale(1.02)' } : {}
       }
-      transition="all 0.2s"
+    //   transition="all 0.2s"
     >
-      <Image
-        src={`${cocktail.imageUrl}${showDescription ? '' : '/preview'}`}
-        alt={cocktail.name}
-        objectFit="cover"
-        width={['100%', '100%', showDescription ? '50%' : '100%']}
-        onClick={() => audio.play()}
+      <Skeleton
+        maxHeight={showDescription ? '100%' : 270}
+        maxWidth={['100%', '100%', showDescription ? '50%' : '100%']}
         order={[0, 0, showDescription ? 1 : 0]}
-      />
+        loading={isImgLoading}
+      >
+        <Image
+          src={`${cocktail.imageUrl}${showDescription ? '' : '/preview'}`}
+          alt={cocktail.name}
+          objectFit="cover"
+          width={['100%', '100%', '100%']}
+          height="100%"
+          order={[0, 0, showDescription ? 1 : 0]}
+          onClick={handleClick}
+          onLoad={handleImgLoaded}
+        />
+      </Skeleton>
 
-      <Box width="100%" p="4" order={[1, 1, showDescription ? 0 : 1]}>
+      <Box
+        width={['100%', '100%', showDescription ? '50%' : '100%']}
+        p="4"
+        order={[1, 1, showDescription ? 0 : 1]}
+      >
         <Flex flex={1} justifyContent="space-between">
-          <Box>
+          <Box onClick={handleClick}>
             <Text fontWeight="bold" fontSize="lg" maxLines={1}>
               {cocktail.name}
             </Text>
