@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import CocktailIcon from '@assets/icons/cocktail';
 import { Navigation } from './nav';
-import { WebTypeEnum } from '@custom-types/common';
+import { WebTypeEnum } from '@custom-types/enums';
 import {
   useHasWeb3Permissions,
   useIsWeb2Route,

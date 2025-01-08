@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import { FC } from 'react';
 import NavigationLink from './nav-link';
-import { WebTypeEnum } from '@custom-types/common';
+import { WebTypeEnum } from '@custom-types/enums';
 
 interface Props {
   type: WebTypeEnum;

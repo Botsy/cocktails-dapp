@@ -1,4 +1,4 @@
-import { WebTypeEnum } from '@custom-types/common';
+import { WebTypeEnum } from '@custom-types/enums';
 import { useLocation } from 'react-router-dom';
 
 const isRouteMatching = (path: string, match: string) => {

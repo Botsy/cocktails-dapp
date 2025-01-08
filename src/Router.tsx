@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { FavoritesProvider } from '@contexts/favorites';
-import { WebTypeEnum } from '@custom-types/common';
+import { WebTypeEnum } from '@custom-types/enums';
 import { FavouritesPage } from '@pages/favourites';
 import { HomePage } from '@pages/home';
 import { NotFoundPage } from '@pages/not-found';

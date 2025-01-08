@@ -1,7 +1,7 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import CocktailsGrid from '@components/common/cocktails-grid';
 import Spinner from '@components/common/spinner';
-import { WebTypeEnum } from '@custom-types/common';
+import { WebTypeEnum } from '@custom-types/enums';
 import { useFavourites } from '@hooks/favorites';
 import { useWeb2CocktailsByIds } from '@hooks/queries';
 
@@ -21,9 +21,9 @@ export const FavouritesPage: React.FC<Props> = ({ webType }) => {
 
   return (
     <Box width="100%" p="4">
-      <Text fontSize="2xl" fontWeight="bold" mb="6">
+      <Heading fontSize="xl" fontWeight="bold" mb="6">
         Favorite Cocktails
-      </Text>
+      </Heading>
       {isLoading ? (
         <Spinner />
       ) : (

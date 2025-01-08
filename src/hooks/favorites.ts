@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Cocktail } from '@custom-types/cocktails';
 import { generateCocktailHash } from '@utils/favourites';
-import { WebTypeEnum } from '@custom-types/common';
+import { WebTypeEnum } from '@custom-types/enums';
 
 const FAVOURITES_STORAGE_KEY = 'favourites';
 const HASH_LENGTH = 64;
