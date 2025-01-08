@@ -10,6 +10,9 @@ export interface CocktailResponseModel {
   idDrink: string;
   strDrink: string;
   strDrinkThumb: string;
+  strCategory: string;
+  strInstructions: string;
+  strAlcoholic: string;
 }
 
 export interface CocktailsResponse {
@@ -22,6 +25,7 @@ export interface Cocktail {
   imageUrl: string;
   category: string;
   ingredients?: string[];
+  instructions?: string;
   alcoholPercentage?: number;
   cocktailType?: string;
   price?: number;

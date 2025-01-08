@@ -2,9 +2,9 @@ import {
   fetchWeb2CocktailById,
   fetchWeb2Categories,
   fetchWeb2CocktailsByCategory,
-  searchCocktailsByIngredientName,
-  searchCocktailsByName,
-  fetchRandomCocktail,
+  searchWeb2CocktailsByIngredientName,
+  searchWeb2CocktailsByName,
+  fetchWeb2RandomCocktail,
 } from '@services/cocktails';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { Web2QueryKeyEnum } from '@custom-types/enums';
@@ -56,12 +56,12 @@ export const useWeb2Search = (search?: string) => {
     queries: [
       {
         queryKey: [Web2QueryKeyEnum.GET_SEARCH_RESULT_BY_INGREDIENT, search],
-        queryFn: () => searchCocktailsByIngredientName(search as string),
+        queryFn: () => searchWeb2CocktailsByIngredientName(search as string),
         enabled: !!search,
       },
       {
         queryKey: [Web2QueryKeyEnum.GET_SEARCH_RESULT_BY_NAME, search],
-        queryFn: () => searchCocktailsByName(search as string),
+        queryFn: () => searchWeb2CocktailsByName(search as string),
         enabled: !!search,
       },
     ],
@@ -80,7 +80,7 @@ export const useWeb2Search = (search?: string) => {
 export const useWeb2RandomCocktail = (enabled: boolean) => {
   return useQuery({
     queryKey: [Web2QueryKeyEnum.GET_RANDOM_COCKTAIL],
-    queryFn: () => fetchRandomCocktail(),
+    queryFn: () => fetchWeb2RandomCocktail(),
     enabled,
   });
 };

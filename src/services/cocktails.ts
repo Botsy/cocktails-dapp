@@ -62,8 +62,13 @@ export const fetchWeb2CocktailById = async (id: string): Promise<Cocktail> => {
       imageUrl: drink.strDrinkThumb,
       category: drink.strCategory,
       ingredients: Array.from({ length: 15 })
-        .map((_, i) => drink[`strIngredient${i + 1}`])
+        .map((_, i) => {
+          const measure = drink[`strMeasure${i + 1}`];
+          const ingredient = drink[`strIngredient${i + 1}`];
+          return measure && ingredient && `${measure} ${ingredient}`;
+        })
         .filter(Boolean),
+      instructions: drink.strInstructions,
       cocktailType: drink.strAlcoholic,
     };
   } catch (error: unknown) {
@@ -71,7 +76,9 @@ export const fetchWeb2CocktailById = async (id: string): Promise<Cocktail> => {
   }
 };
 
-export const searchCocktailsByIngredientName = async (ingredient: string) => {
+export const searchWeb2CocktailsByIngredientName = async (
+  ingredient: string
+) => {
   try {
     const response = await axios
       .get<CocktailsResponse>(`${API_URL}/filter.php?i=${ingredient}`)
@@ -94,7 +101,7 @@ export const searchCocktailsByIngredientName = async (ingredient: string) => {
   }
 };
 
-export const searchCocktailsByName = async (name: string) => {
+export const searchWeb2CocktailsByName = async (name: string) => {
   try {
     const response = await axios
       .get<CocktailsResponse>(`${API_URL}/search.php?s=${name}`)
@@ -112,6 +119,38 @@ export const searchCocktailsByName = async (name: string) => {
       name: drink.strDrink,
       imageUrl: drink.strDrinkThumb,
     })) as Cocktail[];
+  } catch (error: unknown) {
+    throw handleAppError(error);
+  }
+};
+
+export const fetchWeb2RandomCocktail = async () => {
+  try {
+    const response = await axios
+      .get(`${API_URL}/random.php`)
+      .then((response) => response.data.drinks || []);
+    if (!response.length) {
+      throw new Error(`Random cocktail not found`);
+    }
+
+    // In case no result is found, return an empty array
+    if (!Array.isArray(response)) return [];
+
+    return response.map((drink) => ({
+      id: drink.idDrink,
+      name: drink.strDrink,
+      imageUrl: drink.strDrinkThumb,
+      category: drink.strCategory,
+      ingredients: Array.from({ length: 15 })
+        .map((_, i) => {
+          const measure = drink[`strMeasure${i + 1}`];
+          const ingredient = drink[`strIngredient${i + 1}`];
+          return measure && ingredient && `${measure} ${ingredient}`;
+        })
+        .filter(Boolean),
+      instructions: drink.strInstructions,
+      cocktailType: drink.strAlcoholic,
+    }))[0] as Cocktail;
   } catch (error: unknown) {
     throw handleAppError(error);
   }
