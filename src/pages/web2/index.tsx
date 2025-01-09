@@ -78,8 +78,11 @@ export const Web2Page: FC = () => {
           The Cocktail App - Web2 version
         </Heading>
         <Button
-          top={[0, 0, 4]}
-          right={[0, 0, 4]}
+          top={[0, 0, 8]}
+          right={[0, 0, 8]}
+          mt={[4, 4, 0]}
+          maxW="sm"
+          alignSelf="center"
           position={['relative', 'relative', 'absolute']}
           onClick={showRandomCocktail}
         >
@@ -97,8 +100,16 @@ export const Web2Page: FC = () => {
           onSearchChange={handleSearch}
         />
       </Flex>
-      <Flex flex={1} justifyContent="space-between" alignItems="center">
-        <Flex flex={1}>
+      <Flex
+        flex={1}
+        justifyContent="space-between"
+        alignItems="center"
+        flexDirection={{
+          base: 'column',
+          md: 'row',
+        }}
+      >
+        <Flex flex={1} order={[1, 1, 0]}>
           {showSearchResults ? (
             <Text fontSize="2xl" mb={4}>
               Search results for: {search}
@@ -110,11 +121,13 @@ export const Web2Page: FC = () => {
           )}
         </Flex>
         {!showSearchResults && (
-          <CategoryFilter
-            categories={categoryOptions}
-            value={[filterCategory]}
-            onCategoryChange={(cat) => setFilterCategory(cat[0])}
-          />
+          <Flex order={[0, 0, 1]}>
+            <CategoryFilter
+              categories={categoryOptions}
+              value={[filterCategory]}
+              onCategoryChange={(cat) => setFilterCategory(cat[0])}
+            />
+          </Flex>
         )}
       </Flex>
       {isLoadingResults ? (

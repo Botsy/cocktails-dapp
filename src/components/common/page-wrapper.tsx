@@ -1,19 +1,14 @@
-import { Box, Container, Flex, Heading, Button, Text } from '@chakra-ui/react';
+import { Box, Container, Flex, Heading, Text } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import CocktailIcon from '@assets/icons/cocktail';
 import { Navigation } from './nav';
 import { WebTypeEnum } from '@custom-types/enums';
-import {
-  useHasWeb3Permissions,
-  useIsWeb2Route,
-  useIsWeb3Route,
-} from '@hooks/common';
+import { useIsWeb2Route, useIsWeb3Route } from '@hooks/common';
 
 const PageWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   const isWeb2 = useIsWeb2Route();
   const isWeb3 = useIsWeb3Route();
-  const hasWeb3Permissions = useHasWeb3Permissions();
 
   return (
     <Box minHeight="100vh" display="flex" flexDirection="column">
@@ -34,6 +29,10 @@ const PageWrapper: FC<{ children: ReactNode }> = ({ children }) => {
           flex="1"
           justifyContent="space-between"
           alignItems="center"
+          flexDirection={{
+            base: 'column',
+            md: 'row',
+          }}
         >
           <Heading size="lg">
             <Flex
@@ -42,6 +41,7 @@ const PageWrapper: FC<{ children: ReactNode }> = ({ children }) => {
               _focus={{ outline: 'none' }}
               _hover={{ textDecoration: 'none' }}
               alignItems="center"
+              mb={[3, 3, 0]}
             >
               <CocktailIcon width={35} height={35} />
               <Text color="black" fontSize="lg" ml={2}>
@@ -56,17 +56,8 @@ const PageWrapper: FC<{ children: ReactNode }> = ({ children }) => {
       </Flex>
 
       {/* Main Content */}
-      <Container display="flex" maxW="container.xl" flex="1" p={4}>
-        {isWeb3 && hasWeb3Permissions ? (
-          <Flex flex="1" flexDirection="column">
-            <Flex justifyContent="flex-end">
-              <Button>Create cocktail</Button>
-            </Flex>
-            <Box>{children}</Box>
-          </Flex>
-        ) : (
-          children
-        )}
+      <Container display="flex" maxW="container.xl" flex="1" p={8}>
+        {children}
       </Container>
 
       {/* Footer */}
@@ -74,11 +65,11 @@ const PageWrapper: FC<{ children: ReactNode }> = ({ children }) => {
         as="footer"
         bg="teal.500"
         color="black"
-        py={4}
+        p={4}
         justifyContent="center"
         mt={8}
       >
-        <Text>
+        <Text textAlign="center">
           <strong>&copy; 2025 The Cocktail App</strong> developed by Boryana
           Dimitrova with &#128155;
         </Text>

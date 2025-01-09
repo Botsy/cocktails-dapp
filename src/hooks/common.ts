@@ -17,8 +17,3 @@ export const useIsWeb3Route = () => {
 
   return isRouteMatching(pathname, WebTypeEnum.WEB_3);
 };
-
-export const useHasWeb3Permissions = () => {
-  // TODO: apply logic for checking whether user has connected wallet
-  return true;
-};
