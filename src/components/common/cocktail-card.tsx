@@ -61,7 +61,7 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
       _hover={
         !showDescription ? { boxShadow: 'lg', transform: 'scale(1.02)' } : {}
       }
-    //   transition="all 0.2s"
+      transition="all 0.2s"
     >
       <Skeleton
         maxHeight={showDescription ? '100%' : 270}

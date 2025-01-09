@@ -17,7 +17,7 @@ const ConnectWallet: FC = () => {
       </Text>
       <HStack gap={4}>
         {connectors.map((connector) => (
-          <Button onClick={() => connect({ connector })}>
+          <Button key={connector.uid} onClick={() => connect({ connector })}>
             {connector.name}
           </Button>
         ))}
