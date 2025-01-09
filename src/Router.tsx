@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { FavoritesProvider } from '@contexts/favorites';
-import { WebTypeEnum } from '@custom-types/enums';
+import { WebTypeEnum } from '@tools/types/enums';
 import ConnectWallet from '@pages/connect-wallet';
 import { FavouritesPage } from '@pages/favourites';
 import { HomePage } from '@pages/home';

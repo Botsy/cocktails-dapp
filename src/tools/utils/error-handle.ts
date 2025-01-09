@@ -1,4 +1,4 @@
-import { AppError } from '@custom-types/common';
+import { AppError } from '@tools/types/common';
 import axios from 'axios';
 
 // Helper function to normalize API errors

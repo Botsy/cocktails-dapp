@@ -1,5 +1,5 @@
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
-import { Cocktail } from '@custom-types/cocktails';
+import { Cocktail } from '@tools/types/cocktails';
 import { FC, useState } from 'react';
 import CocktailCard from './cocktail-card';
 import { useWeb2CocktailById } from '@hooks/queries';

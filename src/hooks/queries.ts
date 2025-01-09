@@ -7,8 +7,8 @@ import {
   fetchWeb2RandomCocktail,
 } from '@services/cocktails';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { Web2QueryKeyEnum } from '@custom-types/enums';
-import { Cocktail } from '@custom-types/cocktails';
+import { Web2QueryKeyEnum } from '@tools/types/enums';
+import { Cocktail } from '@tools/types/cocktails';
 
 export const useWeb2Categories = () => {
   return useQuery({

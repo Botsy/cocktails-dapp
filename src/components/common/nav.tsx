@@ -1,7 +1,7 @@
 import { Button, Flex } from '@chakra-ui/react';
 import { FC, useState } from 'react';
 import NavigationLink from './nav-link';
-import { WebTypeEnum } from '@custom-types/enums';
+import { WebTypeEnum } from '@tools/types/enums';
 import { useIsWeb3Route } from '@hooks/common';
 import { useAccount, useDisconnect } from 'wagmi';
 import { FaSignOutAlt } from 'react-icons/fa';

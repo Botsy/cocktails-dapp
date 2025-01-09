@@ -1,4 +1,4 @@
-import { Cocktail } from '@custom-types/cocktails';
+import { Cocktail } from '@tools/types/cocktails';
 import { FC } from 'react';
 import {
   DialogContent,

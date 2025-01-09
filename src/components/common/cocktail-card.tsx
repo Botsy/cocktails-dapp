@@ -1,6 +1,6 @@
 import { Box, Image, Text, IconButton, Flex, List } from '@chakra-ui/react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import { Cocktail } from '@custom-types/cocktails';
+import { Cocktail } from '@tools/types/cocktails';
 import { FC, useEffect, useState } from 'react';
 import { useFavorites } from '@contexts/favorites';
 import { Tooltip } from '@components/ui/tooltip';

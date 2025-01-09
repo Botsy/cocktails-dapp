@@ -11,8 +11,8 @@ import CocktailDialog from '@components/common/cocktail-dialog';
 import CocktailsGrid from '@components/common/cocktails-grid';
 import Search from '@components/common/search';
 import Spinner from '@components/common/spinner';
-import { Category } from '@custom-types/cocktails';
-import { Web2QueryKeyEnum } from '@custom-types/enums';
+import { Category } from '@tools/types/cocktails';
+import { Web2QueryKeyEnum } from '@tools/types/enums';
 import {
   useWeb2Categories,
   useWeb2CocktailsByCategory,

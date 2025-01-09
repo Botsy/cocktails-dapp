@@ -1,5 +1,5 @@
-import { Cocktail } from '@custom-types/cocktails';
-import { WebTypeEnum } from '@custom-types/enums';
+import { Cocktail } from '@tools/types/cocktails';
+import { WebTypeEnum } from '@tools/types/enums';
 
 export const generateCocktailHash = async (
   cocktail: Cocktail,

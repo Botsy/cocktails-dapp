@@ -13,8 +13,7 @@
       "@hooks/*": ["./src/hooks/*"],
       "@pages/*": ["./src/pages/*"],
       "@services/*": ["./src/services/*"],
-      "@custom-types/*": ["./src/custom-types/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@tools/*": ["./src/tools/*"],
     },
 
     /* Bundler mode */

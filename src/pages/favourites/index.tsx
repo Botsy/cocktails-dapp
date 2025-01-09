@@ -1,7 +1,7 @@
 import { Box, Heading } from '@chakra-ui/react';
 import CocktailsGrid from '@components/common/cocktails-grid';
 import Spinner from '@components/common/spinner';
-import { WebTypeEnum } from '@custom-types/enums';
+import { WebTypeEnum } from '@tools/types/enums';
 import { useFavourites } from '@hooks/favorites';
 import { useWeb2CocktailsByIds } from '@hooks/queries';
 

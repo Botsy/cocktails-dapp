@@ -5,9 +5,9 @@ import {
   ReactNode,
   useEffect,
 } from 'react';
-import { Cocktail } from '@custom-types/cocktails';
-import { generateCocktailHash } from '@utils/favourites';
-import { WebTypeEnum } from '@custom-types/enums';
+import { Cocktail } from '@tools/types/cocktails';
+import { generateCocktailHash } from '@tools/utils/favourites';
+import { WebTypeEnum } from '@tools/types/enums';
 
 const FAVOURITES_STORAGE_KEY = 'favourites';
 const HASH_LENGTH = 64;

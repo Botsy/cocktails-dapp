@@ -3,8 +3,8 @@ import {
   Category,
   Cocktail,
   CocktailsResponse,
-} from '@custom-types/cocktails';
-import { handleAppError } from '@utils/error-handle';
+} from '@tools/types/cocktails';
+import { handleAppError } from '@tools/utils/error-handle';
 import axios from 'axios';
 
 const API_URL = 'https://www.thecocktaildb.com/api/json/v1/1';
