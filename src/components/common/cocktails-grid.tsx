@@ -21,7 +21,7 @@ const CocktailsGrid: FC<Props> = ({ cocktails }) => {
   if (!cocktails?.length) return <Text>No cocktails were found.</Text>;
 
   return (
-    <Box width="100%">
+    <Box width="100%" my={4}>
       <SimpleGrid columns={[1, 2, 4, 6]} rowGap={3} columnGap={3}>
         {cocktails?.map((cocktail) => (
           <CocktailCard

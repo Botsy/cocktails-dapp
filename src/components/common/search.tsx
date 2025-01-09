@@ -78,6 +78,7 @@ const Search: FC<Props> = ({ placeholder, search, onSearchChange }) => {
           <Input
             placeholder={placeholder}
             variant="outline"
+            name="search"
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onKeyDown={handleKeyDown}

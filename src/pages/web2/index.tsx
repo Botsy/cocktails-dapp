@@ -110,15 +110,11 @@ export const Web2Page: FC = () => {
         }}
       >
         <Flex flex={1} order={[1, 1, 0]}>
-          {showSearchResults ? (
-            <Text fontSize="2xl" mb={4}>
-              Search results for: {search}
-            </Text>
-          ) : (
-            <Text fontSize="2xl" mb={4}>
-              Cocktails in Category: {filterCategory}
-            </Text>
-          )}
+          <Text fontSize="2xl">
+            {showSearchResults
+              ? `Search results for: ${search}`
+              : `Cocktails in Category: ${filterCategory}`}
+          </Text>
         </Flex>
         {!showSearchResults && (
           <Flex order={[0, 0, 1]}>
