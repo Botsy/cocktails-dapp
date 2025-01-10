@@ -16,6 +16,7 @@ import {
   useWeb3CocktailById,
   useWeb3CocktailsCount,
   useWeb3CocktailsList,
+  useWeb3Search,
 } from '@hooks/queries';
 import { FC, useState } from 'react';
 
@@ -27,14 +28,18 @@ export const Web3Page: FC = () => {
   const { data: cocktailsCount, isLoading: isLoadingCocktailCount } =
     useWeb3CocktailsCount();
 
-  const { data, isLoading: isLoadingResults } = useWeb3CocktailsList(
+  const { data: cocktails, isLoading: isLoadingResults } = useWeb3CocktailsList(
     Number(cocktailsCount) || 0
   );
+
+  const { data: searchResults, isLoading: isLoadingSearch } =
+    useWeb3Search(search);
 
   const { data: randomCocktail, isLoading: isLoadingRandomCocktail } =
     useWeb3CocktailById(randomId);
 
-  const isLoading = isLoadingCocktailCount || isLoadingResults;
+  const isLoading =
+    isLoadingCocktailCount || isLoadingResults || isLoadingSearch;
 
   const handleSearch = (search: string) => setSearch(search);
 
@@ -130,7 +135,13 @@ export const Web3Page: FC = () => {
           </Flex>
         )}
       </Flex>
-      {isLoading ? <Spinner /> : <CocktailsGrid cocktails={data} />}
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <CocktailsGrid
+          cocktails={showSearchResults ? searchResults : cocktails}
+        />
+      )}
     </Box>
   );
 };

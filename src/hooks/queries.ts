@@ -112,6 +112,7 @@ export const useWeb3CocktailsList = (count: number) => {
       // First cocktail is with ID: 0
       queryFn: () => getCocktailById(i),
       staleTime: 1000 * 60 * 60 * 23, // 23h
+      enabled: count > 0,
     })),
     combine: (results) => {
       return {
@@ -119,6 +120,7 @@ export const useWeb3CocktailsList = (count: number) => {
           .map((result) => result.data)
           .filter(Boolean) as Cocktail[],
         isLoading: results.some((result) => result.isLoading),
+        isError: results.some((result) => result.isError),
       };
     },
   });
@@ -141,4 +143,23 @@ export const useWeb3CocktailsByIds = (ids: string[]) => {
       };
     },
   });
+};
+
+export const useWeb3Search = (search: string) => {
+  const { data: cocktailsCount } = useWeb3CocktailsCount();
+  const {
+    data: allCocktails,
+    isLoading,
+    isError,
+  } = useWeb3CocktailsList(cocktailsCount || 0);
+
+  const filteredCocktails = allCocktails?.filter((cocktail) =>
+    cocktail.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return {
+    data: filteredCocktails,
+    isLoading,
+    isError,
+  };
 };
