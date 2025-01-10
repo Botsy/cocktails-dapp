@@ -35,12 +35,12 @@ export const useWeb2CocktailById = (id: string) => {
   });
 };
 
-export const useWeb2CocktailsByIds = (ids: string[], enabled: boolean) => {
+export const useWeb2CocktailsByIds = (ids: string[]) => {
   return useQueries({
     queries: ids.map((id) => ({
       queryKey: [Web2QueryKeyEnum.GET_COCKTAIL_BY_ID, id],
       queryFn: () => fetchWeb2CocktailById(id),
-      enabled,
+      enabled: !!ids.length,
     })),
     combine: (results) => {
       return {
@@ -117,7 +117,26 @@ export const useWeb3CocktailsList = (count: number) => {
       return {
         data: results
           .map((result) => result.data)
-          .filter(Boolean) as unknown as Cocktail[],
+          .filter(Boolean) as Cocktail[],
+        isLoading: results.some((result) => result.isLoading),
+      };
+    },
+  });
+};
+
+export const useWeb3CocktailsByIds = (ids: string[]) => {
+  const { getCocktailById } = useCocktailContract();
+  return useQueries({
+    queries: ids.map((id) => ({
+      queryKey: [Web3QueryKeyEnum.GET_COCKTAIL_BY_ID, id],
+      queryFn: () => getCocktailById(parseInt(id)),
+      enabled: !!ids.length,
+    })),
+    combine: (results) => {
+      return {
+        data: results
+          .map((result) => result.data)
+          .filter(Boolean) as Cocktail[],
         isLoading: results.some((result) => result.isLoading),
       };
     },
