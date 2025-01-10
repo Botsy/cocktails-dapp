@@ -1,5 +1,5 @@
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useIsWeb3Route } from '@hooks/common';
 import { useWeb2CocktailById } from '@hooks/queries';
 import { Cocktail } from '@tools/types/cocktails';
@@ -24,6 +24,16 @@ const CocktailsGrid: FC<Props> = ({ cocktails }) => {
     ? cocktails?.find((c) => c.id === selectedId)
     : null;
 
+  const singleCocktail = isWeb3 ? singleWeb3Cocktail : singleWeb2Cocktail;
+
+  // Close cocktail dialog in case cocktail is no longer in cocktails list
+  useEffect(() => {
+    const isCocktailInList = cocktails?.find(
+      (c) => c.id === singleCocktail?.id
+    );
+    if (!isCocktailInList) setSelectedId('');
+  }, [cocktails, singleCocktail?.id]);
+
   if (!cocktails?.length) return <Text>No cocktails were found.</Text>;
 
   return (
@@ -39,7 +49,7 @@ const CocktailsGrid: FC<Props> = ({ cocktails }) => {
       </SimpleGrid>
       <CocktailDialog
         show={!!selectedId}
-        cocktail={isWeb3 ? singleWeb3Cocktail : singleWeb2Cocktail}
+        cocktail={singleCocktail}
         isLoading={isLoadingSingleWeb2Cocktail}
         onClose={clearSelected}
       />
