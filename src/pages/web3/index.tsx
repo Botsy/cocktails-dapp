@@ -14,23 +14,31 @@ import Search from '@components/common/search';
 import Spinner from '@components/common/spinner';
 import {
   useWeb3CocktailById,
+  useWeb3CocktailCategories,
+  useWeb3CocktailsByCategory,
   useWeb3CocktailsCount,
   useWeb3CocktailsList,
   useWeb3Search,
 } from '@hooks/queries';
+import { Category } from '@tools/types/cocktails';
 import { FC, useState } from 'react';
 
 export const Web3Page: FC = () => {
   const [search, setSearch] = useState('');
-  const [filterCategory, setFilterCategory] = useState('');
+  const [filterCategory, setFilterCategory] = useState<string | undefined>(undefined);
   const [randomId, setRandomId] = useState<number | undefined>(undefined);
 
   const { data: cocktailsCount, isLoading: isLoadingCocktailCount } =
     useWeb3CocktailsCount();
 
-  const { data: cocktails, isLoading: isLoadingResults } = useWeb3CocktailsList(
-    Number(cocktailsCount) || 0
-  );
+  const { data: allCocktails, isLoading: isLoadingResults } =
+    useWeb3CocktailsList(Number(cocktailsCount) || 0);
+
+  const { data: filteredCocktails, isLoading: isLoadingFilteredResults } =
+    useWeb3CocktailsByCategory(filterCategory);
+
+  const { data: categories, isLoading: isLoadingCategories } =
+    useWeb3CocktailCategories();
 
   const { data: searchResults, isLoading: isLoadingSearch } =
     useWeb3Search(search);
@@ -38,8 +46,15 @@ export const Web3Page: FC = () => {
   const { data: randomCocktail, isLoading: isLoadingRandomCocktail } =
     useWeb3CocktailById(randomId);
 
-  const isLoading =
-    isLoadingCocktailCount || isLoadingResults || isLoadingSearch;
+  const isLoadingContent =
+    isLoadingResults ||
+    isLoadingSearch ||
+    isLoadingCategories ||
+    isLoadingFilteredResults;
+
+  const showSearchResults = !!search && searchResults;
+
+  const cocktails = filterCategory ? filteredCocktails : allCocktails;
 
   const handleSearch = (search: string) => setSearch(search);
 
@@ -52,16 +67,21 @@ export const Web3Page: FC = () => {
     setRandomId(undefined);
   };
 
-  const showSearchResults = !!search; // TODO: consider search results as well
+  if (isLoadingCocktailCount) return <Spinner />;
 
   const categoryOptions = createListCollection({
-    items: [
-      {
-        label: 'placeholder',
-        value: 'placeholder',
-      },
-    ],
+    items: categories.map((category: Category) => ({
+      label: category.name,
+      value: category.name,
+    })),
   });
+
+  const getListTitle = () => {
+    if (showSearchResults) return `Search results for: ${search}`;
+    if (filterCategory) return `Cocktails in Category: ${filterCategory}`;
+
+    return 'All Cocktails';
+  };
 
   return (
     <Box width="100%">
@@ -119,11 +139,7 @@ export const Web3Page: FC = () => {
         }}
       >
         <Flex flex={1} order={[1, 1, 0]}>
-          <Text fontSize="2xl">
-            {showSearchResults
-              ? `Search results for: ${search}`
-              : `Cocktails in Category: ${filterCategory}`}
-          </Text>
+          <Text fontSize="2xl">{getListTitle()}</Text>
         </Flex>
         {!showSearchResults && (
           <Flex order={[0, 0, 1]}>
@@ -135,7 +151,7 @@ export const Web3Page: FC = () => {
           </Flex>
         )}
       </Flex>
-      {isLoading ? (
+      {isLoadingContent ? (
         <Spinner />
       ) : (
         <CocktailsGrid

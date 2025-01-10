@@ -8,7 +8,7 @@ import {
 } from '@services/cocktails';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { Web2QueryKeyEnum, Web3QueryKeyEnum } from '@tools/types/enums';
-import { Cocktail } from '@tools/types/cocktails';
+import { Category, Cocktail } from '@tools/types/cocktails';
 import { useCocktailContract } from './contract';
 
 export const useWeb2Categories = () => {
@@ -155,6 +155,57 @@ export const useWeb3Search = (search: string) => {
 
   const filteredCocktails = allCocktails?.filter((cocktail) =>
     cocktail.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return {
+    data: filteredCocktails,
+    isLoading,
+    isError,
+  };
+};
+
+export const useWeb3CocktailCategories = () => {
+  const { data: cocktailsCount } = useWeb3CocktailsCount();
+  const {
+    data: allCocktails,
+    isLoading,
+    isError,
+  } = useWeb3CocktailsList(cocktailsCount || 0);
+
+  const uniqueCategories = Array.from(
+    new Set(allCocktails?.map((cocktail) => cocktail.category.toLowerCase()))
+  );
+
+  return {
+    data: uniqueCategories.map(
+      (cat, i) =>
+        ({
+          id: i + 1,
+          name: cat,
+        }) as unknown as Category
+    ),
+    isLoading,
+    isError,
+  };
+};
+
+export const useWeb3CocktailsByCategory = (category?: string) => {
+  const { data: cocktailsCount } = useWeb3CocktailsCount();
+  const {
+    data: allCocktails,
+    isLoading,
+    isError,
+  } = useWeb3CocktailsList(cocktailsCount || 0);
+
+  if (!category)
+    return {
+      data: undefined,
+      isLoading: false,
+      isError: false,
+    };
+
+  const filteredCocktails = allCocktails?.filter(
+    (cocktail) => cocktail.category.toLowerCase() === category.toLowerCase()
   );
 
   return {

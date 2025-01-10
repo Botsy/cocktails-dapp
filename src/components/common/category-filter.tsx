@@ -1,6 +1,6 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Box, ListCollection } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   SelectContent,
   SelectItem,
@@ -9,10 +9,11 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@components/ui/select';
+import { useIsWeb3Route } from '@hooks/common';
 
 interface CategoryFilterProps {
   categories: ListCollection;
-  value: string[];
+  value: (string | undefined)[];
   onCategoryChange: (value: string[]) => void;
 }
 
@@ -21,8 +22,13 @@ const CategoryFilter: FC<CategoryFilterProps> = ({
   value,
   onCategoryChange,
 }) => {
+  const isWeb3 = useIsWeb3Route();
   const navigate = useNavigate();
-  const queryParams = new URLSearchParams(location.search);
+  const location = useLocation();
+  const queryParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
 
   const initialCategory = queryParams.get('category') || value;
 
@@ -32,6 +38,19 @@ const CategoryFilter: FC<CategoryFilterProps> = ({
     }
   }, [initialCategory, onCategoryChange, value]);
 
+  const updateRouteParams = (queryParams: URLSearchParams) =>
+    navigate(`${location.pathname}?${queryParams.toString()}`);
+
+  const handleChange = (e) => {
+    onCategoryChange(e.value);
+    if (e.value[0]) {
+      queryParams.set('category', e.value);
+    } else {
+      queryParams.delete('category');
+    }
+    updateRouteParams(queryParams);
+  };
+
   return (
     <Box mb={4}>
       <SelectRoot
@@ -39,13 +58,10 @@ const CategoryFilter: FC<CategoryFilterProps> = ({
         size="sm"
         width="320px"
         value={value}
-        onValueChange={(e) => {
-          onCategoryChange(e.value);
-          navigate(`?category=${e.value[0]}`);
-        }}
+        onValueChange={handleChange}
       >
         <SelectLabel>Filter by category:</SelectLabel>
-        <SelectTrigger>
+        <SelectTrigger clearable={isWeb3 && !!value[0]}>
           <SelectValueText placeholder="Select category" />
         </SelectTrigger>
         <SelectContent>
