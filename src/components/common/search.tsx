@@ -80,7 +80,9 @@ const Search: FC<Props> = ({ placeholder, search, onSearchChange }) => {
             variant="outline"
             name="search"
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) =>
+              e.target.value === '' ? handleClear() : setValue(e.target.value)
+            }
             onKeyDown={handleKeyDown}
             size="lg"
           />
