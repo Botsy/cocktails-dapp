@@ -33,10 +33,7 @@ const Router = () => {
           <FavoritesProvider webType={WebTypeEnum.WEB_2}>
             <Routes>
               <Route path="" element={<Web2Page />} />
-              <Route
-                path="favourites"
-                element={<FavouritesPage webType={WebTypeEnum.WEB_2} />}
-              />
+              <Route path="favourites" element={<FavouritesPage />} />
             </Routes>
           </FavoritesProvider>
         }
@@ -66,7 +63,7 @@ const Router = () => {
                 path="favourites"
                 element={
                   <PrivateRoute>
-                    <FavouritesPage webType={WebTypeEnum.WEB_3} />
+                    <FavouritesPage />
                   </PrivateRoute>
                 }
               />

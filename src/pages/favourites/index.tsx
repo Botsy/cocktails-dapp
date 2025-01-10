@@ -1,17 +1,13 @@
+import { FC } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
 import CocktailsGrid from '@components/common/cocktails-grid';
 import Spinner from '@components/common/spinner';
+import { useFavourites } from '@contexts/favorites';
 import { useIsWeb3Route } from '@hooks/common';
-import { useFavourites } from '@hooks/favorites';
 import { useWeb2CocktailsByIds, useWeb3CocktailsByIds } from '@hooks/queries';
-import { WebTypeEnum } from '@tools/types/enums';
 
-interface Props {
-  webType: WebTypeEnum;
-}
-
-export const FavouritesPage: React.FC<Props> = ({ webType }) => {
-  const { getFavouriteIds } = useFavourites(webType);
+export const FavouritesPage: FC = () => {
+  const { getFavouriteIds } = useFavourites();
   const favouriteIds = getFavouriteIds();
   const isWeb3 = useIsWeb3Route();
   const useQueryFn = isWeb3 ? useWeb3CocktailsByIds : useWeb2CocktailsByIds;

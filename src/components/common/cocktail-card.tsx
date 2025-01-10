@@ -2,13 +2,12 @@ import { Box, Image, Text, IconButton, Flex, List } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { Tooltip } from '@components/ui/tooltip';
-import { useFavorites } from '@contexts/favorites';
+import { useFavourites } from '@contexts/favorites';
 import { Skeleton } from '@components/ui/skeleton';
 import { Cocktail } from '@tools/types/cocktails';
 import { cocktailSound } from '@tools/utils/sound';
 import { Rating } from '@components/ui/rating';
 import { useIsWeb3Route } from '@hooks/common';
-import CocktailIcon from '@assets/icons/cocktail';
 
 interface Props {
   cocktail: Cocktail;
@@ -17,7 +16,7 @@ interface Props {
 }
 
 const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
-  const { addFavourite, removeFavourite, isFavourite } = useFavorites();
+  const { addFavourite, removeFavourite, isFavourite } = useFavourites();
   const [isImgLoading, setIsImgLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isFav, setIsFav] = useState(false);

@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 import { NavLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 
-export const NavigationLink: FC<Partial<RouterLinkProps> & ChakraLinkProps> = ({
+const NavigationLink: FC<Partial<RouterLinkProps> & ChakraLinkProps> = ({
   to,
   children,
   ...props
