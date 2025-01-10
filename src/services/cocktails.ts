@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { toaster } from '@components/ui/toaster';
 import {
   CategoriesResponse,
   Category,
@@ -5,11 +7,10 @@ import {
   CocktailsResponse,
 } from '@tools/types/cocktails';
 import { handleAppError } from '@tools/utils/error-handle';
-import axios from 'axios';
 
 const API_URL = 'https://www.thecocktaildb.com/api/json/v1/1';
 
-export const fetchWeb2Categories = async (): Promise<Category[]> => {
+export const fetchWeb2Categories = async (): Promise<Category[] | void> => {
   try {
     const { data } = await axios.get<CategoriesResponse>(
       `${API_URL}/list.php?c=list`
@@ -24,13 +25,17 @@ export const fetchWeb2Categories = async (): Promise<Category[]> => {
         }) as unknown as Category
     );
   } catch (error: unknown) {
-    throw handleAppError(error);
+    const handledError = handleAppError(error);
+    toaster.create({
+      description: handledError.message,
+      type: 'error',
+    });
   }
 };
 
 export const fetchWeb2CocktailsByCategory = async (
   category: string
-): Promise<Cocktail[]> => {
+): Promise<Cocktail[] | void> => {
   try {
     const { data } = await axios.get<CocktailsResponse>(
       `${API_URL}/filter.php?c=${encodeURIComponent(category)}`
@@ -44,11 +49,17 @@ export const fetchWeb2CocktailsByCategory = async (
       category,
     }));
   } catch (error: unknown) {
-    throw handleAppError(error);
+    const handledError = handleAppError(error);
+    toaster.create({
+      description: handledError.message,
+      type: 'error',
+    });
   }
 };
 
-export const fetchWeb2CocktailById = async (id: string): Promise<Cocktail> => {
+export const fetchWeb2CocktailById = async (
+  id: string
+): Promise<Cocktail | void> => {
   try {
     const response = await axios.get(`${API_URL}/lookup.php?i=${id}`);
     const drink = response.data.drinks?.[0];
@@ -73,7 +84,11 @@ export const fetchWeb2CocktailById = async (id: string): Promise<Cocktail> => {
       cocktailType: drink.strAlcoholic,
     };
   } catch (error: unknown) {
-    throw handleAppError(error);
+    const handledError = handleAppError(error);
+    toaster.create({
+      description: handledError.message,
+      type: 'error',
+    });
   }
 };
 
@@ -98,7 +113,11 @@ export const searchWeb2CocktailsByIngredientName = async (
       imageUrl: drink.strDrinkThumb,
     })) as Cocktail[];
   } catch (error: unknown) {
-    throw handleAppError(error);
+    const handledError = handleAppError(error);
+    toaster.create({
+      description: handledError.message,
+      type: 'error',
+    });
   }
 };
 
@@ -121,7 +140,11 @@ export const searchWeb2CocktailsByName = async (name: string) => {
       imageUrl: drink.strDrinkThumb,
     })) as Cocktail[];
   } catch (error: unknown) {
-    throw handleAppError(error);
+    const handledError = handleAppError(error);
+    toaster.create({
+      description: handledError.message,
+      type: 'error',
+    });
   }
 };
 
@@ -154,6 +177,10 @@ export const fetchWeb2RandomCocktail = async () => {
     }));
     return data[0] as Cocktail;
   } catch (error: unknown) {
-    throw handleAppError(error);
+    const handledError = handleAppError(error);
+    toaster.create({
+      description: handledError.message,
+      type: 'error',
+    });
   }
 };
