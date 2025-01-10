@@ -7,6 +7,7 @@ import {
   HStack,
   Text,
 } from '@chakra-ui/react';
+import AddCocktailDialog from '@components/common/add-cocktail-dialog';
 import CategoryFilter from '@components/common/category-filter';
 import CocktailDialog from '@components/common/cocktail-dialog';
 import CocktailsGrid from '@components/common/cocktails-grid';
@@ -25,8 +26,11 @@ import { FC, useState } from 'react';
 
 export const Web3Page: FC = () => {
   const [search, setSearch] = useState('');
-  const [filterCategory, setFilterCategory] = useState<string | undefined>(undefined);
+  const [filterCategory, setFilterCategory] = useState<string | undefined>(
+    undefined
+  );
   const [randomId, setRandomId] = useState<number | undefined>(undefined);
+  const [showAddDialog, setShowAddDialog] = useState(false);
 
   const { data: cocktailsCount, isLoading: isLoadingCocktailCount } =
     useWeb3CocktailsCount();
@@ -67,6 +71,9 @@ export const Web3Page: FC = () => {
     setRandomId(undefined);
   };
 
+  const showAddCocktailDialog = () => setShowAddDialog(true);
+  const closeAddCocktailDialog = () => setShowAddDialog(false);
+
   if (isLoadingCocktailCount) return <Spinner />;
 
   const categoryOptions = createListCollection({
@@ -103,7 +110,7 @@ export const Web3Page: FC = () => {
               colorPalette="teal"
               variant="surface"
               alignSelf="center"
-              onClick={() => {}}
+              onClick={showAddCocktailDialog}
             >
               Add cocktail
             </Button>
@@ -117,6 +124,10 @@ export const Web3Page: FC = () => {
             </Button>
           </HStack>
         )}
+        <AddCocktailDialog
+          show={showAddDialog}
+          onClose={closeAddCocktailDialog}
+        />
         <CocktailDialog
           show={!!randomId}
           isLoading={isLoadingRandomCocktail}
