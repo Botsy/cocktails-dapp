@@ -76,7 +76,7 @@ const AddCocktailDialog: FC<Props> = ({ show, onClose }) => {
   };
 
   const handleClose = () => {
-    clearErrors();
+    reset();
     onClose();
   };
 
