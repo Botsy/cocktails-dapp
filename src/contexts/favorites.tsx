@@ -5,6 +5,7 @@ import {
   ReactNode,
   useEffect,
 } from 'react';
+import { toaster } from '@components/ui/toaster';
 import { Cocktail } from '@tools/types/cocktails';
 import { generateCocktailHash } from '@tools/utils/favourites';
 import { WebTypeEnum } from '@tools/types/enums';
@@ -55,6 +56,10 @@ export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({
           localStorageKey,
           JSON.stringify(Array.from(newFavourites))
         );
+        toaster.create({
+          description: `${cocktail.name} was added to favourites`,
+          type: 'info',
+        });
       }
       return newFavourites;
     });
@@ -72,6 +77,10 @@ export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({
           localStorageKey,
           JSON.stringify(Array.from(newFavourites))
         );
+        toaster.create({
+          description: `${cocktail.name} was removed from favourites`,
+          type: 'info',
+        });
       }
       return newFavourites;
     });
