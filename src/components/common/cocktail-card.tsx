@@ -7,7 +7,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { Cocktail } from '@tools/types/cocktails';
 import { cocktailSound } from '@tools/utils/sound';
 import { Rating } from '@components/ui/rating';
-import { useIsWeb3Route } from '@hooks/common';
+import { useIsWeb2Route, useIsWeb3Route } from '@hooks/common';
 
 interface Props {
   cocktail: Cocktail;
@@ -21,6 +21,7 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isFav, setIsFav] = useState(false);
 
+  const isWeb2 = useIsWeb2Route();
   const isWeb3 = useIsWeb3Route();
 
   useEffect(() => {
@@ -66,24 +67,25 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
       }
       transition="all 0.2s"
     >
-      <Skeleton
+      <Flex
         maxHeight={showDescription ? '100%' : 270}
         width={['100%', '100%', showDescription ? '50%' : '100%']}
         order={[0, 0, showDescription ? 1 : 0]}
-        loading={isImgLoading}
+        cursor="pointer"
+        onClick={handleClick}
       >
-        <Image
-          src={`${cocktail.imageUrl}${showDescription ? '' : '/preview'}`}
-          alt={cocktail.name}
-          objectFit="cover"
-          width={['100%', '100%', '100%']}
-          height={showDescription ? '100%' : 190}
-          order={[0, 0, showDescription ? 1 : 0]}
-          cursor="pointer"
-          onClick={handleClick}
-          onLoad={handleImgLoaded}
-        />
-      </Skeleton>
+        <Skeleton width="100%" loading={isImgLoading}>
+          <Image
+            src={`${cocktail.imageUrl}${!showDescription && isWeb2 ? '/preview' : ''}`}
+            alt={cocktail.name}
+            objectFit="cover"
+            width="100%"
+            height={showDescription ? '100%' : 190}
+            order={[0, 0, showDescription ? 1 : 0]}
+            onLoad={handleImgLoaded}
+          />
+        </Skeleton>
+      </Flex>
 
       <Box
         width={['100%', '100%', showDescription ? '50%' : '100%']}
