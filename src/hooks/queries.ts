@@ -7,8 +7,9 @@ import {
   fetchWeb2RandomCocktail,
 } from '@services/cocktails';
 import { useQueries, useQuery } from '@tanstack/react-query';
-import { Web2QueryKeyEnum } from '@tools/types/enums';
+import { Web2QueryKeyEnum, Web3QueryKeyEnum } from '@tools/types/enums';
 import { Cocktail } from '@tools/types/cocktails';
+import { useCocktailContract } from './contract';
 
 export const useWeb2Categories = () => {
   return useQuery({
@@ -83,5 +84,31 @@ export const useWeb2RandomCocktail = (enabled: boolean) => {
     queryKey: [Web2QueryKeyEnum.GET_RANDOM_COCKTAIL],
     queryFn: () => fetchWeb2RandomCocktail(),
     enabled,
+  });
+};
+
+export const useWeb3CocktailsCount = () => {
+  const { getCocktailCount } = useCocktailContract();
+  return useQuery({
+    queryKey: [Web3QueryKeyEnum.GET_COCKTAILS_COUNT],
+    queryFn: getCocktailCount,
+  });
+};
+
+export const useWeb3CocktailsList = (count: number) => {
+  const { getCocktailById } = useCocktailContract();
+  return useQueries({
+    queries: Array.from({ length: count }).map((_, i) => ({
+      queryKey: [Web3QueryKeyEnum.GET_COCKTAIL_BY_ID, i],
+      // First cocktail is with ID: 0
+      queryFn: () => getCocktailById(i),
+      staleTime: 1000 * 60 * 60 * 23, // 23h
+    })),
+    combine: (results) => {
+      return {
+        data: results.map((result) => result.data).filter(Boolean),
+        isLoading: results.some((result) => result.isLoading),
+      };
+    },
   });
 };

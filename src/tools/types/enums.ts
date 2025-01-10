@@ -11,3 +11,10 @@ export enum Web2QueryKeyEnum {
   GET_SEARCH_RESULT_BY_NAME = 'web2-search-name',
   GET_RANDOM_COCKTAIL = 'web2-random',
 }
+
+export enum Web3QueryKeyEnum {
+  GET_COCKTAILS_COUNT = 'web3-cocktails-count',
+  GET_COCKTAIL_BY_ID = 'web3-cocktail',
+  ADD_COCKTAIL = 'web3-add-cocktail',
+  RATE_COCKTAIL = 'web3-rate-cocktail',
+}

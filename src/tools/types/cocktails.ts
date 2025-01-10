@@ -29,8 +29,7 @@ export interface Cocktail {
   alcoholPercentage?: number;
   cocktailType?: string;
   price?: number;
-  totalRatings?: number;
-  numberOfRatings?: number;
+  averageRating?: number;
 }
 
 export interface Category {

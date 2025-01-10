@@ -27,6 +27,7 @@ export const fetchWeb2Categories = async (): Promise<Category[]> => {
     throw handleAppError(error);
   }
 };
+
 export const fetchWeb2CocktailsByCategory = async (
   category: string
 ): Promise<Cocktail[]> => {

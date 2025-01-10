@@ -2,9 +2,9 @@ import { Box, Container, Flex, Heading, Text } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import CocktailIcon from '@assets/icons/cocktail';
-import { Navigation } from './nav';
-import { WebTypeEnum } from '@tools/types/enums';
 import { useIsWeb2Route, useIsWeb3Route } from '@hooks/common';
+import { WebTypeEnum } from '@tools/types/enums';
+import { Navigation } from './nav';
 
 const PageWrapper: FC<{ children: ReactNode }> = ({ children }) => {
   const isWeb2 = useIsWeb2Route();
