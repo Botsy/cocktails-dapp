@@ -85,7 +85,8 @@ export const useCocktailContract = () => {
       if (!contract) throw new Error('Contract not initialized');
 
       try {
-        return (await contract.read.getCockltailCount([])) as unknown as number;
+        const result = await contract.read.getCockltailCount([]);
+        return Number(result);
       } catch (error) {
         console.error('Error fetching cocktail count:', error);
         throw new Error('Failed to fetch the total number of cocktails.');

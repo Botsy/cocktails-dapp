@@ -1,8 +1,9 @@
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
-import { Cocktail } from '@tools/types/cocktails';
 import { FC, useState } from 'react';
-import CocktailCard from './cocktail-card';
+import { useIsWeb2Route } from '@hooks/common';
 import { useWeb2CocktailById } from '@hooks/queries';
+import { Cocktail } from '@tools/types/cocktails';
+import CocktailCard from './cocktail-card';
 import CocktailDialog from './cocktail-dialog';
 
 interface Props {
@@ -10,10 +11,11 @@ interface Props {
 }
 
 const CocktailsGrid: FC<Props> = ({ cocktails }) => {
+  const isWeb2 = useIsWeb2Route();
   const [selectedId, setSelectedId] = useState('');
 
   const { data: singleCocktail, isLoading: isLoadingSingleCocktail } =
-    useWeb2CocktailById(selectedId);
+    useWeb2CocktailById(isWeb2 ? selectedId : '');
 
   const setSelected = (id: string) => setSelectedId(id);
   const clearSelected = () => setSelectedId('');
@@ -33,7 +35,7 @@ const CocktailsGrid: FC<Props> = ({ cocktails }) => {
       </SimpleGrid>
       <CocktailDialog
         show={!!selectedId}
-        cocktail={singleCocktail}
+        cocktail={isWeb2 ? singleCocktail : cocktails[parseInt(selectedId)]}
         isLoading={isLoadingSingleCocktail}
         onClose={clearSelected}
       />

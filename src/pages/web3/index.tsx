@@ -4,6 +4,7 @@ import {
   createListCollection,
   Flex,
   Heading,
+  HStack,
   Text,
 } from '@chakra-ui/react';
 import CategoryFilter from '@components/common/category-filter';
@@ -11,24 +12,42 @@ import CocktailDialog from '@components/common/cocktail-dialog';
 import CocktailsGrid from '@components/common/cocktails-grid';
 import Search from '@components/common/search';
 import Spinner from '@components/common/spinner';
+import {
+  useWeb3CocktailById,
+  useWeb3CocktailsCount,
+  useWeb3CocktailsList,
+} from '@hooks/queries';
 import { FC, useState } from 'react';
 
 export const Web3Page: FC = () => {
   const [search, setSearch] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
-  const [showRandomResult, setShowRandomResult] = useState(false);
+  const [randomId, setRandomId] = useState<number | undefined>(undefined);
+
+  const { data: cocktailsCount, isLoading: isLoadingCocktailCount } =
+    useWeb3CocktailsCount();
+
+  const { data, isLoading: isLoadingResults } = useWeb3CocktailsList(
+    Number(cocktailsCount) || 0
+  );
+
+  const { data: randomCocktail, isLoading: isLoadingRandomCocktail } =
+    useWeb3CocktailById(randomId);
+
+  const isLoading = isLoadingCocktailCount || isLoadingResults;
 
   const handleSearch = (search: string) => setSearch(search);
 
-  const showRandomCocktail = () => setShowRandomResult(true);
+  const showRandomCocktail = () => {
+    const randId = cocktailsCount && Math.round(Math.random() * cocktailsCount);
+    setRandomId(randId);
+  };
 
   const closeRandomCocktail = () => {
-    setShowRandomResult(false);
+    setRandomId(undefined);
   };
 
   const showSearchResults = !!search; // TODO: consider search results as well
-
-  const isLoadingResults = false; // TODO: use this from query once data fetching is set
 
   const categoryOptions = createListCollection({
     items: [
@@ -45,21 +64,38 @@ export const Web3Page: FC = () => {
         <Heading textAlign="center" mt={6}>
           The Cocktail App - Web3 version
         </Heading>
-        <Button
-          top={[0, 0, 8]}
-          right={[0, 0, 8]}
-          mt={[4, 4, 0]}
-          maxW="sm"
-          alignSelf="center"
-          position={['relative', 'relative', 'absolute']}
-          onClick={showRandomCocktail}
-        >
-          Get random cocktail
-        </Button>
+        {!isLoadingCocktailCount && (
+          <HStack
+            top={[0, 0, 0, 8]}
+            right={[0, 0, 0, 8]}
+            mt={[4, 4, 4, 0]}
+            gap={4}
+            justifyContent="center"
+            position={['relative', 'relative', 'relative', 'absolute']}
+          >
+            <Button
+              maxW="sm"
+              colorPalette="teal"
+              variant="surface"
+              alignSelf="center"
+              onClick={() => {}}
+            >
+              Add cocktail
+            </Button>
+            <Button
+              variant="surface"
+              maxW="sm"
+              alignSelf="center"
+              onClick={showRandomCocktail}
+            >
+              Get random cocktail
+            </Button>
+          </HStack>
+        )}
         <CocktailDialog
-          show={showRandomResult}
-          isLoading={false}
-          cocktail={null}
+          show={!!randomId}
+          isLoading={isLoadingRandomCocktail}
+          cocktail={randomCocktail}
           onClose={closeRandomCocktail}
         />
         <Search
@@ -94,7 +130,7 @@ export const Web3Page: FC = () => {
           </Flex>
         )}
       </Flex>
-      {isLoadingResults ? <Spinner /> : <CocktailsGrid cocktails={[]} />}
+      {isLoading ? <Spinner /> : <CocktailsGrid cocktails={data} />}
     </Box>
   );
 };

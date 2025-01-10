@@ -95,6 +95,15 @@ export const useWeb3CocktailsCount = () => {
   });
 };
 
+export const useWeb3CocktailById = (id?: number) => {
+  const { getCocktailById } = useCocktailContract();
+  return useQuery({
+    queryKey: [Web3QueryKeyEnum.GET_COCKTAIL_BY_ID, id],
+    queryFn: () => getCocktailById(id as number),
+    enabled: !!id,
+  });
+};
+
 export const useWeb3CocktailsList = (count: number) => {
   const { getCocktailById } = useCocktailContract();
   return useQueries({
@@ -106,7 +115,9 @@ export const useWeb3CocktailsList = (count: number) => {
     })),
     combine: (results) => {
       return {
-        data: results.map((result) => result.data).filter(Boolean),
+        data: results
+          .map((result) => result.data)
+          .filter(Boolean) as unknown as Cocktail[],
         isLoading: results.some((result) => result.isLoading),
       };
     },

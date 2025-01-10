@@ -1,11 +1,14 @@
 import { Box, Image, Text, IconButton, Flex, List } from '@chakra-ui/react';
-import { FaStar, FaRegStar } from 'react-icons/fa';
-import { Cocktail } from '@tools/types/cocktails';
 import { FC, useEffect, useState } from 'react';
-import { useFavorites } from '@contexts/favorites';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 import { Tooltip } from '@components/ui/tooltip';
-import ClinkSound from '@assets/sounds/clinking-glass.wav';
+import { useFavorites } from '@contexts/favorites';
 import { Skeleton } from '@components/ui/skeleton';
+import { Cocktail } from '@tools/types/cocktails';
+import { cocktailSound } from '@tools/utils/sound';
+import { Rating } from '@components/ui/rating';
+import { useIsWeb3Route } from '@hooks/common';
+import CocktailIcon from '@assets/icons/cocktail';
 
 interface Props {
   cocktail: Cocktail;
@@ -15,14 +18,15 @@ interface Props {
 
 const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
   const { addFavourite, removeFavourite, isFavourite } = useFavorites();
-  const [audio] = useState(new Audio(ClinkSound));
   const [isImgLoading, setIsImgLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isFav, setIsFav] = useState(false);
 
+  const isWeb3 = useIsWeb3Route();
+
   useEffect(() => {
-    if (showDescription) audio.play();
-  }, [audio, showDescription]);
+    if (showDescription) cocktailSound.play();
+  }, [showDescription]);
 
   useEffect(() => {
     const checkFavourite = async () => {
@@ -65,7 +69,7 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
     >
       <Skeleton
         maxHeight={showDescription ? '100%' : 270}
-        maxWidth={['100%', '100%', showDescription ? '50%' : '100%']}
+        width={['100%', '100%', showDescription ? '50%' : '100%']}
         order={[0, 0, showDescription ? 1 : 0]}
         loading={isImgLoading}
       >
@@ -74,7 +78,7 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
           alt={cocktail.name}
           objectFit="cover"
           width={['100%', '100%', '100%']}
-          height="100%"
+          height={showDescription ? '100%' : 190}
           order={[0, 0, showDescription ? 1 : 0]}
           onClick={handleClick}
           onLoad={handleImgLoaded}
@@ -125,6 +129,13 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
             pt={3}
             pb={3}
           >
+            {isWeb3 && (
+              <Rating
+                defaultValue={cocktail.averageRating || 0}
+                mb={3}
+                disabled
+              />
+            )}
             {cocktail.cocktailType && (
               <Box mb={2}>
                 <Text fontWeight="bold" fontSize="sm">

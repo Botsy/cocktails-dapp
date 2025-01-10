@@ -78,6 +78,7 @@ export const Web2Page: FC = () => {
           The Cocktail App - Web2 version
         </Heading>
         <Button
+          variant="surface"
           top={[0, 0, 8]}
           right={[0, 0, 8]}
           mt={[4, 4, 0]}
