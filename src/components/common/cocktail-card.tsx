@@ -1,6 +1,6 @@
 import { Box, Image, Text, IconButton, Flex, List } from '@chakra-ui/react';
 import { FC, useEffect, useState } from 'react';
-import { FaStar, FaRegStar } from 'react-icons/fa';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { Tooltip } from '@components/ui/tooltip';
 import { useFavourites } from '@contexts/favorites';
 import { Skeleton } from '@components/ui/skeleton';
@@ -79,6 +79,7 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
           width={['100%', '100%', '100%']}
           height={showDescription ? '100%' : 190}
           order={[0, 0, showDescription ? 1 : 0]}
+          cursor="pointer"
           onClick={handleClick}
           onLoad={handleImgLoaded}
         />
@@ -90,7 +91,7 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
         order={[1, 1, showDescription ? 0 : 1]}
       >
         <Flex flex={1} justifyContent="space-between">
-          <Box onClick={handleClick}>
+          <Box onClick={handleClick} cursor="pointer">
             <Text fontWeight="bold" fontSize="lg" maxLines={1}>
               {cocktail.name}
             </Text>
@@ -112,9 +113,9 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
               ml={2}
             >
               {isFav ? (
-                <FaStar color="turquoise" />
+                <FaHeart color="violet" />
               ) : (
-                <FaRegStar color="turquoise" />
+                <FaRegHeart color="turquoise" />
               )}
             </IconButton>
           </Tooltip>
