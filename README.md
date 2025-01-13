@@ -30,6 +30,9 @@ Check out the hosted solution on Vercel: [Cocktail App](https://cocktails-dapp.v
   - Listen for `CocktailAdded` and `CocktailRated` blockchain events.
   - Automatically invalidate and refetch data to stay up-to-date.
 
+
+  ⚠️ **Note:** Some of the images of the cocktails may not load since there is a CSP header added that restricts the images to load only from the Cocktail API domain as external source.
+
 ---
 
 ## 🛠️ Technologies Used
