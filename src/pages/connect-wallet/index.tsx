@@ -16,7 +16,7 @@ const ConnectWallet: FC = () => {
         To unlock functionality, connect your wallet:
       </Text>
       <HStack gap={4}>
-        {!connectors.length ? (
+        {connectors.length ? (
           connectors.map((connector) => (
             <Button key={connector.uid} onClick={() => connect({ connector })}>
               {connector.name}
