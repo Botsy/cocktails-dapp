@@ -26,6 +26,25 @@ export const useWeb2CocktailsByCategory = (category?: string) => {
   });
 };
 
+export const useWeb2Cocktails = (categories: Category[]) => {
+  return useQueries({
+    queries: categories.map((category) => ({
+      queryKey: [Web2QueryKeyEnum.GET_COCKTAILS_BY_CATEGORY, category.name],
+      queryFn: () => fetchWeb2CocktailsByCategory(category.name),
+      enabled: !!category, // Only fetch if category is defined
+    })),
+    combine: (results) => {
+      return {
+        data: results
+          .map((result) => result.data)
+          .flat()
+          .filter(Boolean) as Cocktail[],
+        isLoading: results.some((result) => result.isLoading),
+      };
+    },
+  });
+};
+
 export const useWeb2CocktailById = (id: string) => {
   return useQuery({
     queryKey: [Web2QueryKeyEnum.GET_COCKTAIL_BY_ID, id],

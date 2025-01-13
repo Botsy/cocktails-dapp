@@ -61,7 +61,7 @@ const CategoryFilter: FC<CategoryFilterProps> = ({
         onValueChange={handleChange}
       >
         <SelectLabel>Filter by category:</SelectLabel>
-        <SelectTrigger clearable={isWeb3 && !!value[0]}>
+        <SelectTrigger clearable={!!value[0]}>
           <SelectValueText placeholder="Select category" />
         </SelectTrigger>
         <SelectContent>

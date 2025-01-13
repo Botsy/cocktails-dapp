@@ -6,21 +6,22 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
+import { FC, useState } from 'react';
 import CategoryFilter from '@components/common/category-filter';
 import CocktailDialog from '@components/common/cocktail-dialog';
 import CocktailsGrid from '@components/common/cocktails-grid';
 import Search from '@components/common/search';
 import Spinner from '@components/common/spinner';
-import { Category } from '@tools/types/cocktails';
-import { Web2QueryKeyEnum } from '@tools/types/enums';
 import {
   useWeb2Categories,
+  useWeb2Cocktails,
   useWeb2CocktailsByCategory,
   useWeb2RandomCocktail,
   useWeb2Search,
 } from '@hooks/queries';
-import { useQueryClient } from '@tanstack/react-query';
-import { FC, useEffect, useState } from 'react';
+import { Category } from '@tools/types/cocktails';
+import { Web2QueryKeyEnum } from '@tools/types/enums';
 
 export const Web2Page: FC = () => {
   const [search, setSearch] = useState('');
@@ -32,7 +33,10 @@ export const Web2Page: FC = () => {
   const { data: categories, isLoading: isLoadingCategories } =
     useWeb2Categories();
 
-  const { data: cocktails, isLoading: isLoadingCocktails } =
+  const { data: allCocktails, isLoading: isLoadingCocktails } =
+    useWeb2Cocktails(categories || []);
+
+  const { data: filteredCocktails, isLoading: isLoadingFilteredCocktails } =
     useWeb2CocktailsByCategory(filterCategory);
 
   const { data: searchResults, isLoading: isLoadingSearch } =
@@ -41,15 +45,12 @@ export const Web2Page: FC = () => {
   const { data: randomCocktail, isLoading: isLoadingRandomCocktail } =
     useWeb2RandomCocktail(showRandomResult);
 
-  useEffect(() => {
-    //Initialise filter category
-    if (!filterCategory && categories?.length)
-      setFilterCategory(categories[0].name);
-  }, [filterCategory, categories]);
-
   const showSearchResults = !!search && searchResults;
 
-  const isLoadingResults = isLoadingCocktails || isLoadingSearch;
+  const isLoadingResults =
+    isLoadingCocktails || isLoadingFilteredCocktails || isLoadingSearch;
+
+  const cocktails = filterCategory ? filteredCocktails : allCocktails;
 
   if (isLoadingCategories) return <Spinner />;
 
@@ -71,6 +72,14 @@ export const Web2Page: FC = () => {
       queryKey: [Web2QueryKeyEnum.GET_RANDOM_COCKTAIL],
     });
   };
+
+  const getListTitle = () => {
+    if (showSearchResults) return `Search results for: ${search}`;
+    if (filterCategory) return `Cocktails in Category: ${filterCategory}`;
+
+    return 'All Cocktails';
+  };
+
   return (
     <Box width="100%">
       <Flex flex={1} flexDirection="column">
@@ -111,11 +120,7 @@ export const Web2Page: FC = () => {
         }}
       >
         <Flex flex={1} order={[1, 1, 0]}>
-          <Text fontSize="2xl">
-            {showSearchResults
-              ? `Search results for: ${search}`
-              : `Cocktails in Category: ${filterCategory}`}
-          </Text>
+          <Text fontSize="2xl">{getListTitle()}</Text>
         </Flex>
         {!showSearchResults && (
           <Flex order={[0, 0, 1]}>

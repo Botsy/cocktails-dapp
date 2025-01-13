@@ -35,7 +35,7 @@ export const fetchWeb2Categories = async (): Promise<Category[] | void> => {
 
 export const fetchWeb2CocktailsByCategory = async (
   category: string
-): Promise<Cocktail[] | void> => {
+): Promise<Cocktail[]> => {
   try {
     const { data } = await axios.get<CocktailsResponse>(
       `${API_URL}/filter.php?c=${encodeURIComponent(category)}`
@@ -54,12 +54,11 @@ export const fetchWeb2CocktailsByCategory = async (
       description: handledError.message,
       type: 'error',
     });
+    return Promise.reject(error);
   }
 };
 
-export const fetchWeb2CocktailById = async (
-  id: string
-): Promise<Cocktail | void> => {
+export const fetchWeb2CocktailById = async (id: string): Promise<Cocktail> => {
   try {
     const response = await axios.get(`${API_URL}/lookup.php?i=${id}`);
     const drink = response.data.drinks?.[0];
@@ -89,6 +88,7 @@ export const fetchWeb2CocktailById = async (
       description: handledError.message,
       type: 'error',
     });
+    return Promise.reject(error);
   }
 };
 
