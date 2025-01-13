@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValueText,
 } from '@components/ui/select';
-import { useIsWeb3Route } from '@hooks/common';
 
 interface CategoryFilterProps {
   categories: ListCollection;
@@ -22,7 +21,6 @@ const CategoryFilter: FC<CategoryFilterProps> = ({
   value,
   onCategoryChange,
 }) => {
-  const isWeb3 = useIsWeb3Route();
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = useMemo(

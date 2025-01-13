@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useAccount, usePublicClient, useWalletClient } from 'wagmi';
 import {
+  Abi,
   getContract,
   GetContractReturnType,
   Log,
@@ -20,7 +21,7 @@ import {
 } from '@tools/utils/local-storage';
 import { config } from '../../wagmi.config';
 
-export const useContract = (address: `0x${string}`, ABI: any) => {
+export const useContract = (address: `0x${string}`, ABI: Abi) => {
   const publicClient = usePublicClient({ config });
   const walletClient = useWalletClient({ config });
 
@@ -50,7 +51,10 @@ export const useCocktailContract = (address?: `0x${string}`) => {
   const account = useAccount({ config });
   const queryClient = useQueryClient();
 
-  const transformCocktailData = (id: number, rawData: any[]): Cocktail => ({
+  const transformCocktailData = (
+    id: number,
+    rawData: [string, string, string, number, string, number, number]
+  ): Cocktail => ({
     id: id.toString(),
     name: rawData[0] || '',
     imageUrl: rawData[1] || '',
@@ -91,7 +95,18 @@ export const useCocktailContract = (address?: `0x${string}`) => {
 
       try {
         const rawData = await contract.read.getCocktail([id]);
-        return transformCocktailData(id, rawData as unknown as any[]);
+        return transformCocktailData(
+          id,
+          rawData as unknown as [
+            string,
+            string,
+            string,
+            number,
+            string,
+            number,
+            number,
+          ]
+        );
       } catch (error) {
         console.error(`Error fetching cocktail with ID ${id}:`, error);
         throw new Error(`Failed to fetch cocktail with ID ${id}.`);
