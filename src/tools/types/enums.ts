@@ -1,6 +1,7 @@
 export enum WebTypeEnum {
   WEB_2 = 'web2',
   WEB_3 = 'web3',
+  TEST = 'test',
 }
 
 export enum Web2QueryKeyEnum {
