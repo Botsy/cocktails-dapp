@@ -16,11 +16,15 @@ const ConnectWallet: FC = () => {
         To unlock functionality, connect your wallet:
       </Text>
       <HStack gap={4}>
-        {connectors.map((connector) => (
-          <Button key={connector.uid} onClick={() => connect({ connector })}>
-            {connector.name}
-          </Button>
-        ))}
+        {!connectors.length ? (
+          connectors.map((connector) => (
+            <Button key={connector.uid} onClick={() => connect({ connector })}>
+              {connector.name}
+            </Button>
+          ))
+        ) : (
+          <Text color="fg.error">No available connectors</Text>
+        )}
       </HStack>
     </Flex>
   );
