@@ -154,8 +154,8 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
                   Ingredients:
                 </Text>
                 <List.Root>
-                  {cocktail.ingredients.map((ingredient) => (
-                    <List.Item fontSize="sm" color="gray.500">
+                  {cocktail.ingredients.map((ingredient, i) => (
+                    <List.Item key={i} fontSize="sm" color="gray.500">
                       {ingredient}
                     </List.Item>
                   ))}

@@ -34,7 +34,6 @@ const AddCocktailDialog: FC<Props> = ({ show, onClose }) => {
     control,
     handleSubmit,
     reset,
-    clearErrors,
     register,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
@@ -49,7 +48,6 @@ const AddCocktailDialog: FC<Props> = ({ show, onClose }) => {
   const { addCocktail } = useCocktailContract();
 
   const onSubmit = (data: FormValues) => {
-    console.log('Form Data:', data);
     addCocktail(
       data.name,
       data.imageUrl,

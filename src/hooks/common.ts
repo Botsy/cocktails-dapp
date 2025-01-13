@@ -21,6 +21,5 @@ export const useIsWeb3Route = () => {
 
 export const useIsCocktailRated = (id: number) => {
   const ratedCocktails = getRatedCocktails();
-  console.log(ratedCocktails, id);
   return ratedCocktails.includes(id.toString());
 };

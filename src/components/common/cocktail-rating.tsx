@@ -15,11 +15,13 @@ const Rating: FC<{ id: number; name: string; avgRate?: number }> = ({
   const { rateCocktail } = useCocktailContract();
   const isRated = useIsCocktailRated(id);
   const [rating, setRating] = useState(avgRate || 0);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleRate = async () => {
     setError(null);
     try {
+      setIsLoading(true);
       await rateCocktail(id, rating);
       setRating(rating);
       toaster.create({
@@ -32,6 +34,8 @@ const Rating: FC<{ id: number; name: string; avgRate?: number }> = ({
         description: handledError.message,
         type: 'error',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -47,12 +51,12 @@ const Rating: FC<{ id: number; name: string; avgRate?: number }> = ({
         />
         {!isRated && (
           <Button size="xs" onClick={handleRate}>
-            Rate
+            {isLoading ? 'Rating...' : 'Rate'}
           </Button>
         )}
       </Flex>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {isRated && <Text fontSize="xs">Already rated this cocktail.</Text>}
+      {isRated && <Text fontSize="xs">You already rated this cocktail.</Text>}
     </Box>
   );
 };
