@@ -1,7 +1,8 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { FavoritesProvider } from '@contexts/favorites';
+import { useWeb3Events } from '@contexts/web3-events';
 import { WebTypeEnum } from '@tools/types/enums';
 import ConnectWallet from '@pages/connect-wallet';
 import { FavouritesPage } from '@pages/favourites';
@@ -20,6 +21,15 @@ export const PrivateRoute: FC<{ children: ReactNode }> = ({ children }) => {
 
 const Router = () => {
   const { isConnected } = useAccount();
+  const { startListening, stopListening } = useWeb3Events();
+
+  useEffect(() => {
+    if (isConnected) startListening();
+    return () => {
+      if (isConnected) stopListening();
+    };
+  }, [startListening, stopListening, isConnected]);
+
   return (
     <Routes>
       {/* General Routes */}

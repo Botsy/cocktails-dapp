@@ -6,8 +6,8 @@ import { useFavourites } from '@contexts/favorites';
 import { Skeleton } from '@components/ui/skeleton';
 import { Cocktail } from '@tools/types/cocktails';
 import { cocktailSound } from '@tools/utils/sound';
-import { Rating } from '@components/ui/rating';
 import { useIsWeb2Route, useIsWeb3Route } from '@hooks/common';
+import Rating from './cocktail-rating';
 
 interface Props {
   cocktail: Cocktail;
@@ -133,9 +133,9 @@ const CocktailCard: FC<Props> = ({ cocktail, showDescription, onSelect }) => {
           >
             {isWeb3 && (
               <Rating
-                defaultValue={cocktail.averageRating || 0}
-                mb={3}
-                disabled
+                id={Number(cocktail.id)}
+                name={cocktail.name}
+                avgRate={cocktail.averageRating}
               />
             )}
             {cocktail.cocktailType && (

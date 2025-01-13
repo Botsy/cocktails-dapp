@@ -8,6 +8,7 @@ import PageWrapper from '@components/common/page-wrapper';
 import { Provider as ChakraUiProvider } from '@components/ui/provider';
 import Router from './Router';
 import { config } from '../wagmi.config';
+import { Web3EventsProvider } from '@contexts/web3-events';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,7 +42,9 @@ function App() {
         <BrowserRouter>
           <ChakraUiProvider>
             <PageWrapper>
-              <Router />
+              <Web3EventsProvider>
+                <Router />
+              </Web3EventsProvider>
             </PageWrapper>
           </ChakraUiProvider>
         </BrowserRouter>
